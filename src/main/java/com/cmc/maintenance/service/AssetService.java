@@ -67,8 +67,10 @@ public class AssetService {
     }
 
     @Transactional(readOnly = true)
-    public List<Asset> getAssetsDueForMaintenance() {
-        return assetRepository.findAssetsDueForMaintenance(LocalDate.now());
+    public List<AssetDTO> getAssetsDueForMaintenance(LocalDate dueDate) {
+        return assetRepository.findAssetsDueForMaintenance(dueDate).stream()
+                .map(AssetMapper::toDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -76,6 +78,12 @@ public class AssetService {
         return assetRepository.findAll().stream()
                 .map(AssetMapper::toDTO)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<AssetDTO> getAssetById(long id) {
+        return assetRepository.findById(id)
+                .map(AssetMapper::toDTO);
     }
 
     @Transactional(readOnly = true)

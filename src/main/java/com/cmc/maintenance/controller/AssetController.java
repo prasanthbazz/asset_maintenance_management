@@ -10,6 +10,7 @@ import com.cmc.maintenance.service.AssetService;
 import com.cmc.maintenance.dto.AssetDTO;
 
 import java.util.List;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/assets")
@@ -38,10 +39,22 @@ public class AssetController {
         return new ResponseEntity<>(assetService.getAllAssets(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AssetDTO> getAssetById(@PathVariable long id){
+        return assetService.getAssetById(id)
+                .map(assetDTO -> ResponseEntity.status(HttpStatus.OK).body(assetDTO))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
     @GetMapping("/tag/{tagId}")
     public ResponseEntity<AssetDTO> findAssetByAssetTagId(@PathVariable String tagId){
         return assetService.getAssetByTagId(tagId)
-                .map(asset -> ResponseEntity.status(HttpStatus.OK).body(asset))
+                .map(assetDTO -> ResponseEntity.status(HttpStatus.OK).body(assetDTO))
                 .orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/due")
+    public ResponseEntity<List<AssetDTO>> getAssetsDueForMaintenance() {
+        return ResponseEntity.ok(assetService.getAssetsDueForMaintenance(LocalDate.now()));
     }
 }
