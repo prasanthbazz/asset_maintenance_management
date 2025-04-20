@@ -24,7 +24,7 @@ public interface AssetRepository extends JpaRepository<Asset, Long> {
     //List<Asset> findByStatus(Asset.AssetStatus status);
 
     //Find assets due for maintenance
-    @Query("SELECT a FROM Asset a WHERE a.nextMaintenance <= :currentDate")
+    @Query("SELECT a FROM Asset a WHERE a.nextMaintenanceDate <= :currentDate")
     List<Asset> findAssetsDueForMaintenance(@Param("currentDate") LocalDate currentDate);
 
     // Count assets by type

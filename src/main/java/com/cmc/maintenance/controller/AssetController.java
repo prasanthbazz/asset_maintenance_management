@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
 
 import com.cmc.maintenance.service.AssetService;
-import com.cmc.maintenance.model.Asset;
+import com.cmc.maintenance.dto.AssetDTO;
 
 import java.util.List;
 
@@ -23,10 +23,10 @@ public class AssetController {
     }
 
     @PostMapping
-    public ResponseEntity<Asset> createAsset(@Valid @RequestBody Asset asset) {
+    public ResponseEntity<AssetDTO> createAsset(@Valid @RequestBody AssetDTO assetDTO) {
         try {
-            Asset newAsset = assetService.createAsset(asset);
-            return new ResponseEntity<>(newAsset, HttpStatus.CREATED);
+            AssetDTO newAssetDTO = assetService.createAsset(assetDTO);
+            return new ResponseEntity<>(newAssetDTO, HttpStatus.CREATED);
         }
         catch(IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -34,12 +34,12 @@ public class AssetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Asset>> getAllAssets(){
+    public ResponseEntity<List<AssetDTO>> getAllAssets(){
         return new ResponseEntity<>(assetService.getAllAssets(), HttpStatus.OK);
     }
 
     @GetMapping("/tag/{tagId}")
-    public ResponseEntity<Asset> findAssetByAssetTagId(@PathVariable String tagId){
+    public ResponseEntity<AssetDTO> findAssetByAssetTagId(@PathVariable String tagId){
         return assetService.getAssetByTagId(tagId)
                 .map(asset -> ResponseEntity.status(HttpStatus.OK).body(asset))
                 .orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
