@@ -1,8 +1,10 @@
 package com.cmc.maintenance.mapper;
 
 import com.cmc.maintenance.dto.AssetDTO;
+import com.cmc.maintenance.dto.ChecklistItemDTO;
 import com.cmc.maintenance.model.Asset;
 import com.cmc.maintenance.model.AssetType;
+import com.cmc.maintenance.model.ChecklistItem;
 import com.cmc.maintenance.repository.AssetTypeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,17 @@ public class AssetMapper {
         dto.setLastMaintenanceTime(asset.getLastMaintenanceTime());
         dto.setNextMaintenanceDate(asset.getNextMaintenanceDate());
         dto.setMaintenanceCycleInDays(asset.getMaintenanceCycleInDays());
+        return dto;
+    }
+
+    public static ChecklistItemDTO toDTO(ChecklistItem checklistItem) {
+        if (checklistItem == null) return null;
+
+        ChecklistItemDTO dto = new ChecklistItemDTO();
+        dto.setId(checklistItem.getId());
+        dto.setTask(checklistItem.getTask());
+        dto.setAssetTypeId(checklistItem.getAssetType() != null ? checklistItem.getAssetType().getId() : null);
+
         return dto;
     }
 }
