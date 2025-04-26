@@ -1,6 +1,7 @@
 package com.cmc.maintenance.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,8 +25,9 @@ public class Asset {
 
     private String location;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "asset_type_id", nullable = false)
+    @NotNull(message = "Asset type cannot be null")
     private AssetType type;
 
     //@Enumerated(EnumType.STRING)

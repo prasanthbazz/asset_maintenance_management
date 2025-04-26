@@ -21,6 +21,7 @@ public class ChecklistItemController {
     @GetMapping("/asset-types/{assetTypeId}/checklist-items")
     public ResponseEntity<List<ChecklistItemDTO>> getChecklistItemsByAssetType(@PathVariable Long assetTypeId) {
         return ResponseEntity.ok(checklistItemService.getChecklistItemsByAssetType(assetTypeId));
+        ////To-Do : Handle exception when assetType is invalid.
     }
 
 }

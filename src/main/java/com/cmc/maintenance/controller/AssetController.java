@@ -1,5 +1,9 @@
 package com.cmc.maintenance.controller;
 
+import com.cmc.maintenance.dto.MaintenanceRecordDTO;
+import com.cmc.maintenance.service.MaintenanceRecordService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +18,11 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/assets")
+@RequiredArgsConstructor
 public class AssetController {
 
     private final AssetService assetService;
-
-    @Autowired
-    public AssetController(AssetService assetService) {
-        this.assetService = assetService;
-    }
+    private final MaintenanceRecordService maintenanceRecordService;
 
     @PostMapping
     public ResponseEntity<AssetDTO> createAsset(@Valid @RequestBody AssetDTO assetDTO) {
@@ -56,5 +57,15 @@ public class AssetController {
     @GetMapping("/due")
     public ResponseEntity<List<AssetDTO>> getAssetsDueForMaintenance() {
         return ResponseEntity.ok(assetService.getAssetsDueForMaintenance(LocalDate.now()));
+    }
+
+    @GetMapping("/{assetId}/maintenance-records")
+    public ResponseEntity<List<MaintenanceRecordDTO>> getMaintenanceRecordsByAssetId(@PathVariable Long assetId) {
+        try {
+            return ResponseEntity.ok(maintenanceRecordService.getMaintenanceRecordsByAssetId(assetId));
+        }
+        catch(EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
