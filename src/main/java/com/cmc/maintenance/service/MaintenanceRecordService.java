@@ -1,6 +1,7 @@
 package com.cmc.maintenance.service;
 
 import com.cmc.maintenance.dto.MaintenanceRecordDTO;
+import com.cmc.maintenance.dto.MaintenanceRecordUpdateDTO;
 import com.cmc.maintenance.dto.MaintenanceResultDTO;
 import com.cmc.maintenance.mapper.AssetMapper;
 import com.cmc.maintenance.model.Asset;
@@ -62,11 +63,47 @@ public class MaintenanceRecordService {
     }
 
     @Transactional(readOnly = true)
+    public List<MaintenanceRecordDTO> getAllApprovedMaintenanceRecords() {
+        return maintenanceRecordRepository.findByApprovalStatus(MaintenanceRecord.ApprovalStatus.APPROVED).stream()
+                .map(AssetMapper::toDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MaintenanceRecordDTO> getAllPendingMaintenanceRecords() {
+        return maintenanceRecordRepository.findByApprovalStatus(MaintenanceRecord.ApprovalStatus.PENDING).stream()
+                .map(AssetMapper::toDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public List<MaintenanceRecordDTO> getMaintenanceRecordsByAssetId(Long assetId) {
         assetRepository.findById(assetId)
                 .orElseThrow(() -> new EntityNotFoundException("Asset not found with id: " + assetId));
-        return maintenanceRecordRepository.findByAssetId(assetId).stream()
+        return maintenanceRecordRepository.findByAssetIdAndApprovalStatus(assetId, MaintenanceRecord.ApprovalStatus.APPROVED).stream()
                 .map(AssetMapper::toDTO)
                 .toList();
+    }
+
+    public MaintenanceRecordDTO approveMaintenanceRecord(Long maintenanceRecordId, MaintenanceRecordUpdateDTO recordUpdateDTO) {
+        MaintenanceRecord record = maintenanceRecordRepository.findById(maintenanceRecordId)
+                .orElseThrow(() -> new EntityNotFoundException("Maintenance Record not found with id : " + maintenanceRecordId));
+        record.setApprovalStatus(MaintenanceRecord.ApprovalStatus.APPROVED);
+        if(recordUpdateDTO != null) {
+            record.setAdminRemarks(recordUpdateDTO.getAdminRemarks());
+        }
+        maintenanceRecordRepository.save(record);
+        return AssetMapper.toDTO(record);
+    }
+
+    public MaintenanceRecordDTO rejectMaintenanceRecord(Long maintenanceRecordId, MaintenanceRecordUpdateDTO recordUpdateDTO) {
+        MaintenanceRecord record = maintenanceRecordRepository.findById(maintenanceRecordId)
+                .orElseThrow(() -> new EntityNotFoundException("Maintenance Record not found with id : " + maintenanceRecordId));
+        record.setApprovalStatus(MaintenanceRecord.ApprovalStatus.REJECTED);
+        if(recordUpdateDTO != null) {
+            record.setAdminRemarks(recordUpdateDTO.getAdminRemarks());
+        }
+        maintenanceRecordRepository.save(record);
+        return AssetMapper.toDTO(record);
     }
 }

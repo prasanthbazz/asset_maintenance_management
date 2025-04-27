@@ -6,4 +6,5 @@ INSERT INTO checklist_items (asset_type_id, task) VALUES
 (1, 'Check wheel alignment'),
 (1, 'Inspect brakes'),
 (2, 'Check mattress condition'),
+(2, 'Check Paint'),
 (3, 'Inspect frame stability');

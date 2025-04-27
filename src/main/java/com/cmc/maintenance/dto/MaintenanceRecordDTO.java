@@ -17,5 +17,9 @@ public class MaintenanceRecordDTO {
     @NotNull(message = "Maintenance Date cannot be null")
     private LocalDateTime maintenanceDate;
 
+    private String approvalStatus;
+
+    private String adminRemarks;
+
     private List<MaintenanceResultDTO> maintenanceResults;
 }

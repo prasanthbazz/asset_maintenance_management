@@ -53,6 +53,8 @@ public class AssetMapper {
         dto.setId(record.getId());
         dto.setAssetId(record.getAsset() != null ? record.getAsset().getId() : null);
         dto.setMaintenanceDate(record.getMaintenanceDate());
+        dto.setApprovalStatus(record.getApprovalStatus().name());
+        dto.setAdminRemarks(record.getAdminRemarks());
         dto.setMaintenanceResults(record.getMaintenanceResults().stream()
                 .map(AssetMapper::toDTO)
                 .toList());
@@ -65,6 +67,10 @@ public class AssetMapper {
 
         maintenanceRecord.setAsset(asset);
         maintenanceRecord.setMaintenanceDate(dto.getMaintenanceDate());
+        if (dto.getApprovalStatus() != null) {
+            maintenanceRecord.setApprovalStatus(MaintenanceRecord.ApprovalStatus.valueOf(dto.getApprovalStatus()));
+        }
+        maintenanceRecord.setAdminRemarks(dto.getAdminRemarks());
 
         return maintenanceRecord;
     }

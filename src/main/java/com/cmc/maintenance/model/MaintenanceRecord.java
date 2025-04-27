@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -24,6 +26,17 @@ public class MaintenanceRecord {
     @NotNull(message = "Maintenance date cannot be null")
     private LocalDateTime maintenanceDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
+
+    @Column(name = "admin_remarks")
+    private String adminRemarks;
+
     @OneToMany(mappedBy = "maintenanceRecord", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MaintenanceResult> maintenanceResults = new ArrayList<MaintenanceResult>();
+
+    public enum ApprovalStatus {
+        PENDING, APPROVED, REJECTED
+    }
 }
