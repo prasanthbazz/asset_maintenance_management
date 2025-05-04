@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,6 +58,7 @@ public class MaintenanceRecordController {
     }
 
     @PatchMapping("/{id}/approve")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MaintenanceRecordDTO> approveMaintenanceRecord(@PathVariable Long id, @RequestBody MaintenanceRecordUpdateDTO recordUpdateDTO) {
         try {
             MaintenanceRecordDTO dto =  maintenanceRecordService.approveMaintenanceRecord(id, recordUpdateDTO);
@@ -68,6 +70,7 @@ public class MaintenanceRecordController {
     }
 
     @PatchMapping("/{id}/reject")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MaintenanceRecordDTO> rejectMaintenanceRecord(@PathVariable Long id, @RequestBody MaintenanceRecordUpdateDTO recordUpdateDTO) {
         try {
             MaintenanceRecordDTO dto =  maintenanceRecordService.rejectMaintenanceRecord(id, recordUpdateDTO);
@@ -77,4 +80,6 @@ public class MaintenanceRecordController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    ////To-Do : bulk-approve and bulk-reject
 }
