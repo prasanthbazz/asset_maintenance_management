@@ -28,3 +28,32 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### FRONTEND ###
+
+frontend/.gitignore
+
+# Logs
+frontend/logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+*.local
+
+# Editor directories and files
+frontend/.vscode/*
+!.vscode/extensions.json
+frontend/.idea
+frontend/.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
