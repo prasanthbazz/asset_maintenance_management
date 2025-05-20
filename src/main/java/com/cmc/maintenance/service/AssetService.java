@@ -1,5 +1,6 @@
 package com.cmc.maintenance.service;
 
+import com.cmc.maintenance.dto.AssetResponseDTO;
 import com.cmc.maintenance.mapper.AssetMapper;
 import com.cmc.maintenance.model.Asset;
 import com.cmc.maintenance.model.AssetType;
@@ -29,7 +30,7 @@ public class AssetService {
     private final AssetTypeService assetTypeService;
     
     @Transactional
-    public AssetDTO createAsset(AssetDTO assetDTO) {
+    public AssetResponseDTO createAsset(AssetDTO assetDTO) {
 
         AssetType assetType = getAssetTypeById(assetDTO.getTypeId());
         Asset asset = AssetMapper.toEntity(assetDTO, assetType);
@@ -68,27 +69,27 @@ public class AssetService {
     }
 
     @Transactional(readOnly = true)
-    public List<AssetDTO> getAssetsDueForMaintenance(LocalDate dueDate) {
+    public List<AssetResponseDTO> getAssetsDueForMaintenance(LocalDate dueDate) {
         return assetRepository.findAssetsDueForMaintenance(dueDate).stream()
                 .map(AssetMapper::toDTO)
                 .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<AssetDTO> getAllAssets() {
+    public List<AssetResponseDTO> getAllAssets() {
         return assetRepository.findAll().stream()
                 .map(AssetMapper::toDTO)
                 .toList();
     }
 
     @Transactional(readOnly = true)
-    public Optional<AssetDTO> getAssetById(long id) {
+    public Optional<AssetResponseDTO> getAssetById(long id) {
         return assetRepository.findById(id)
                 .map(AssetMapper::toDTO);
     }
 
     @Transactional(readOnly = true)
-    public Optional<AssetDTO> getAssetByTagId(String tagId) {
+    public Optional<AssetResponseDTO> getAssetByTagId(String tagId) {
         return assetRepository.findByTagId(tagId)
                 .map(AssetMapper::toDTO);
     }

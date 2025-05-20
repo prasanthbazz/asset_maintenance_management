@@ -1,6 +1,8 @@
 package com.cmc.maintenance.controller;
 
+import com.cmc.maintenance.dto.AssetResponseDTO;
 import com.cmc.maintenance.dto.MaintenanceRecordDTO;
+import com.cmc.maintenance.dto.MaintenanceRecordResponseDTO;
 import com.cmc.maintenance.service.MaintenanceRecordService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +29,9 @@ public class AssetController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AssetDTO> createAsset(@Valid @RequestBody AssetDTO assetDTO) {
+    public ResponseEntity<AssetResponseDTO> createAsset(@Valid @RequestBody AssetDTO assetDTO) {
         try {
-            AssetDTO newAssetDTO = assetService.createAsset(assetDTO);
+            AssetResponseDTO newAssetDTO = assetService.createAsset(assetDTO);
             return new ResponseEntity<>(newAssetDTO, HttpStatus.CREATED);
         }
         catch(IllegalArgumentException e){
@@ -38,31 +40,31 @@ public class AssetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AssetDTO>> getAllAssets(){
+    public ResponseEntity<List<AssetResponseDTO>> getAllAssets(){
         return new ResponseEntity<>(assetService.getAllAssets(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AssetDTO> getAssetById(@PathVariable long id){
+    public ResponseEntity<AssetResponseDTO> getAssetById(@PathVariable long id){
         return assetService.getAssetById(id)
                 .map(assetDTO -> ResponseEntity.status(HttpStatus.OK).body(assetDTO))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/tag/{tagId}")
-    public ResponseEntity<AssetDTO> findAssetByAssetTagId(@PathVariable String tagId){
+    public ResponseEntity<AssetResponseDTO> findAssetByAssetTagId(@PathVariable String tagId){
         return assetService.getAssetByTagId(tagId)
                 .map(assetDTO -> ResponseEntity.status(HttpStatus.OK).body(assetDTO))
                 .orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/due")
-    public ResponseEntity<List<AssetDTO>> getAssetsDueForMaintenance() {
+    public ResponseEntity<List<AssetResponseDTO>> getAssetsDueForMaintenance() {
         return ResponseEntity.ok(assetService.getAssetsDueForMaintenance(LocalDate.now()));
     }
 
     @GetMapping("/{assetId}/maintenance-records")
-    public ResponseEntity<List<MaintenanceRecordDTO>> getMaintenanceRecordsByAssetId(@PathVariable Long assetId) {
+    public ResponseEntity<List<MaintenanceRecordResponseDTO>> getMaintenanceRecordsByAssetId(@PathVariable Long assetId) {
         try {
             return ResponseEntity.ok(maintenanceRecordService.getMaintenanceRecordsByAssetId(assetId));
         }

@@ -1,6 +1,7 @@
 package com.cmc.maintenance.service;
 
 import com.cmc.maintenance.dto.MaintenanceRecordDTO;
+import com.cmc.maintenance.dto.MaintenanceRecordResponseDTO;
 import com.cmc.maintenance.dto.MaintenanceRecordUpdateDTO;
 import com.cmc.maintenance.dto.MaintenanceResultDTO;
 import com.cmc.maintenance.mapper.AssetMapper;
@@ -29,7 +30,7 @@ public class MaintenanceRecordService {
     private final ChecklistItemRepository checklistItemRepository;
 
     @Transactional
-    public MaintenanceRecordDTO createMaintenanceRecord(MaintenanceRecordDTO maintenanceRecordDTO){
+    public MaintenanceRecordResponseDTO createMaintenanceRecord(MaintenanceRecordDTO maintenanceRecordDTO){
         Asset asset = this.assetRepository.findById(maintenanceRecordDTO.getAssetId())
                 .orElseThrow(() -> new EntityNotFoundException("Asset not found with id: " + maintenanceRecordDTO.getAssetId()));
 
@@ -49,35 +50,35 @@ public class MaintenanceRecordService {
     }
 
     @Transactional(readOnly = true)
-    public MaintenanceRecordDTO getMaintenanceRecord(Long id) {
+    public MaintenanceRecordResponseDTO getMaintenanceRecord(Long id) {
         MaintenanceRecord record = maintenanceRecordRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("MaintenanceRecord not found with id: " + id));
         return AssetMapper.toDTO(record);
     }
 
     @Transactional(readOnly = true)
-    public List<MaintenanceRecordDTO> getAllMaintenanceRecords() {
+    public List<MaintenanceRecordResponseDTO> getAllMaintenanceRecords() {
         return maintenanceRecordRepository.findAll().stream()
                 .map(AssetMapper::toDTO)
                 .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<MaintenanceRecordDTO> getAllApprovedMaintenanceRecords() {
+    public List<MaintenanceRecordResponseDTO> getAllApprovedMaintenanceRecords() {
         return maintenanceRecordRepository.findByApprovalStatus(MaintenanceRecord.ApprovalStatus.APPROVED).stream()
                 .map(AssetMapper::toDTO)
                 .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<MaintenanceRecordDTO> getAllPendingMaintenanceRecords() {
+    public List<MaintenanceRecordResponseDTO> getAllPendingMaintenanceRecords() {
         return maintenanceRecordRepository.findByApprovalStatus(MaintenanceRecord.ApprovalStatus.PENDING).stream()
                 .map(AssetMapper::toDTO)
                 .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<MaintenanceRecordDTO> getMaintenanceRecordsByAssetId(Long assetId) {
+    public List<MaintenanceRecordResponseDTO> getMaintenanceRecordsByAssetId(Long assetId) {
         assetRepository.findById(assetId)
                 .orElseThrow(() -> new EntityNotFoundException("Asset not found with id: " + assetId));
         return maintenanceRecordRepository.findByAssetIdAndApprovalStatus(assetId, MaintenanceRecord.ApprovalStatus.APPROVED).stream()
@@ -85,7 +86,7 @@ public class MaintenanceRecordService {
                 .toList();
     }
 
-    public MaintenanceRecordDTO approveMaintenanceRecord(Long maintenanceRecordId, MaintenanceRecordUpdateDTO recordUpdateDTO) {
+    public MaintenanceRecordResponseDTO approveMaintenanceRecord(Long maintenanceRecordId, MaintenanceRecordUpdateDTO recordUpdateDTO) {
         MaintenanceRecord record = maintenanceRecordRepository.findById(maintenanceRecordId)
                 .orElseThrow(() -> new EntityNotFoundException("Maintenance Record not found with id : " + maintenanceRecordId));
         record.setApprovalStatus(MaintenanceRecord.ApprovalStatus.APPROVED);
@@ -96,7 +97,7 @@ public class MaintenanceRecordService {
         return AssetMapper.toDTO(record);
     }
 
-    public MaintenanceRecordDTO rejectMaintenanceRecord(Long maintenanceRecordId, MaintenanceRecordUpdateDTO recordUpdateDTO) {
+    public MaintenanceRecordResponseDTO rejectMaintenanceRecord(Long maintenanceRecordId, MaintenanceRecordUpdateDTO recordUpdateDTO) {
         MaintenanceRecord record = maintenanceRecordRepository.findById(maintenanceRecordId)
                 .orElseThrow(() -> new EntityNotFoundException("Maintenance Record not found with id : " + maintenanceRecordId));
         record.setApprovalStatus(MaintenanceRecord.ApprovalStatus.REJECTED);
