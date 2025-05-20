@@ -86,12 +86,24 @@ public class AssetMapper {
         return maintenanceRecord;
     }
 
-    public static MaintenanceResultDTO toDTO(MaintenanceResult result) {
+//    public static MaintenanceResultDTO toDTO(MaintenanceResult result) {
+//        if (result == null) return null;
+//        MaintenanceResultDTO dto = new MaintenanceResultDTO();
+//        dto.setId(result.getId());
+//        dto.setMaintenanceRecordId(result.getMaintenanceRecord() != null ? result.getMaintenanceRecord().getId() : null);
+//        dto.setChecklistItemId(result.getChecklistItem() != null ? result.getChecklistItem().getId() : null);
+//        dto.setResult(result.getResult() != null ? result.getResult().name() : null);
+//        dto.setComments(result.getComments());
+//        return dto;
+//    }
+
+    public static MaintenanceResultResponseDTO toDTO(MaintenanceResult result) {
         if (result == null) return null;
-        MaintenanceResultDTO dto = new MaintenanceResultDTO();
+        MaintenanceResultResponseDTO dto = new MaintenanceResultResponseDTO();
         dto.setId(result.getId());
         dto.setMaintenanceRecordId(result.getMaintenanceRecord() != null ? result.getMaintenanceRecord().getId() : null);
         dto.setChecklistItemId(result.getChecklistItem() != null ? result.getChecklistItem().getId() : null);
+        dto.setChecklistItemTask(result.getChecklistItem() != null ? result.getChecklistItem().getTask() : null);
         dto.setResult(result.getResult() != null ? result.getResult().name() : null);
         dto.setComments(result.getComments());
         return dto;

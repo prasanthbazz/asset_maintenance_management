@@ -228,11 +228,11 @@ const MaintenanceApproval = () => {
                         </TableCell>
                         <TableCell>
                             {report.maintenanceResults.filter((item) => item.result === 'NOT_OK').length > 0 ? (
-                            <Badge className="bg-amber-500 hover:bg-amber-600">
+                            <Badge className="bg-amber-300 hover:bg-amber-400">
                                 {report.maintenanceResults.filter((item) => item.result === 'NOT_OK').length} Issues
                             </Badge>
                             ) : (
-                            <Badge className="bg-green-500 hover:bg-green-600">No Issues</Badge>
+                            <Badge className="bg-green-300 hover:bg-green-400">No Issues</Badge>
                             )}
                         </TableCell>
                         <TableCell>
@@ -295,11 +295,11 @@ const MaintenanceApproval = () => {
                         index !== selectedReport.maintenanceResults.length - 1 ? "border-b border-border" : ""
                         }`}>
                         <div>
-                            <p className="font-medium">{issue.checklistItemId}</p>
+                            <p className="font-medium">{issue.checklistItemTask}</p>
                             {issue.comments && <p className="text-sm text-muted-foreground">{issue.comments}</p>}
                         </div>
                         <Badge className={`${
-                            issue.result === 'OK' ? "bg-green-500 hover:bg-green-600" : "bg-amber-500 hover:bg-amber-600"
+                            issue.result === 'OK' ? "bg-green-300 hover:bg-green-400" : "bg-amber-300 hover:bg-amber-400"
                         }`}>
                             {issue.result}
                         </Badge>

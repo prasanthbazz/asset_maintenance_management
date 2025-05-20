@@ -20,5 +20,5 @@ public class MaintenanceRecordResponseDTO {
 
     private String adminRemarks;
 
-    private List<MaintenanceResultDTO> maintenanceResults;
+    private List<MaintenanceResultResponseDTO> maintenanceResults;
 }
