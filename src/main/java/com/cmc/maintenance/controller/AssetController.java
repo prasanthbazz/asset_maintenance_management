@@ -66,7 +66,7 @@ public class AssetController {
     @GetMapping("/{assetId}/maintenance-records")
     public ResponseEntity<List<MaintenanceRecordResponseDTO>> getMaintenanceRecordsByAssetId(@PathVariable Long assetId) {
         try {
-            return ResponseEntity.ok(maintenanceRecordService.getMaintenanceRecordsByAssetId(assetId));
+            return ResponseEntity.ok(maintenanceRecordService.getApprovedMaintenanceRecordsByAssetId(assetId));
         }
         catch(EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

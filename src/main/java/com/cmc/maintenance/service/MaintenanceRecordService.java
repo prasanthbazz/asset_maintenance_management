@@ -78,7 +78,7 @@ public class MaintenanceRecordService {
     }
 
     @Transactional(readOnly = true)
-    public List<MaintenanceRecordResponseDTO> getMaintenanceRecordsByAssetId(Long assetId) {
+    public List<MaintenanceRecordResponseDTO> getApprovedMaintenanceRecordsByAssetId(Long assetId) {
         assetRepository.findById(assetId)
                 .orElseThrow(() -> new EntityNotFoundException("Asset not found with id: " + assetId));
         return maintenanceRecordRepository.findByAssetIdAndApprovalStatus(assetId, MaintenanceRecord.ApprovalStatus.APPROVED).stream()
