@@ -1,6 +1,7 @@
 package com.cmc.maintenance.controller;
 
 import com.cmc.maintenance.dto.MaintenanceRecordDTO;
+import com.cmc.maintenance.dto.MaintenanceRecordResponseDTO;
 import com.cmc.maintenance.dto.MaintenanceRecordUpdateDTO;
 import com.cmc.maintenance.service.MaintenanceRecordService;
 
@@ -21,9 +22,9 @@ public class MaintenanceRecordController {
     private final MaintenanceRecordService maintenanceRecordService;
 
     @PostMapping
-    public ResponseEntity<MaintenanceRecordDTO> createMaintenanceRecord(@Valid @RequestBody MaintenanceRecordDTO maintenanceRecordDTO) {
+    public ResponseEntity<MaintenanceRecordResponseDTO> createMaintenanceRecord(@Valid @RequestBody MaintenanceRecordDTO maintenanceRecordDTO) {
         try {
-            MaintenanceRecordDTO recordDTO = maintenanceRecordService.createMaintenanceRecord(maintenanceRecordDTO);
+            MaintenanceRecordResponseDTO recordDTO = maintenanceRecordService.createMaintenanceRecord(maintenanceRecordDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(recordDTO);
         }
         catch (EntityNotFoundException e) {
@@ -32,9 +33,9 @@ public class MaintenanceRecordController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MaintenanceRecordDTO> getMaintenanceRecord(@PathVariable Long id) {
+    public ResponseEntity<MaintenanceRecordResponseDTO> getMaintenanceRecord(@PathVariable Long id) {
         try {
-            MaintenanceRecordDTO record = maintenanceRecordService.getMaintenanceRecord(id);
+            MaintenanceRecordResponseDTO record = maintenanceRecordService.getMaintenanceRecord(id);
             return ResponseEntity.ok(record);
         }
         catch (EntityNotFoundException e) {
@@ -43,25 +44,25 @@ public class MaintenanceRecordController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MaintenanceRecordDTO>> getAllMaintenanceRecords() {
+    public ResponseEntity<List<MaintenanceRecordResponseDTO>> getAllMaintenanceRecords() {
         return ResponseEntity.status(HttpStatus.OK).body(maintenanceRecordService.getAllMaintenanceRecords());
     }
 
     @GetMapping("/pending")
-    public ResponseEntity<List<MaintenanceRecordDTO>> getAllPendingMaintenanceRecords() {
+    public ResponseEntity<List<MaintenanceRecordResponseDTO>> getAllPendingMaintenanceRecords() {
         return ResponseEntity.status(HttpStatus.OK).body(maintenanceRecordService.getAllPendingMaintenanceRecords());
     }
 
     @GetMapping("/approved")
-    public ResponseEntity<List<MaintenanceRecordDTO>> getAllApprovedMaintenanceRecords() {
+    public ResponseEntity<List<MaintenanceRecordResponseDTO>> getAllApprovedMaintenanceRecords() {
         return ResponseEntity.status(HttpStatus.OK).body(maintenanceRecordService.getAllApprovedMaintenanceRecords());
     }
 
     @PatchMapping("/{id}/approve")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MaintenanceRecordDTO> approveMaintenanceRecord(@PathVariable Long id, @RequestBody MaintenanceRecordUpdateDTO recordUpdateDTO) {
+    public ResponseEntity<MaintenanceRecordResponseDTO> approveMaintenanceRecord(@PathVariable Long id, @RequestBody(required=false) MaintenanceRecordUpdateDTO recordUpdateDTO) {
         try {
-            MaintenanceRecordDTO dto =  maintenanceRecordService.approveMaintenanceRecord(id, recordUpdateDTO);
+            MaintenanceRecordResponseDTO dto =  maintenanceRecordService.approveMaintenanceRecord(id, recordUpdateDTO);
             return ResponseEntity.status(HttpStatus.OK).body(dto);
         }
         catch (EntityNotFoundException e) {
@@ -71,9 +72,9 @@ public class MaintenanceRecordController {
 
     @PatchMapping("/{id}/reject")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MaintenanceRecordDTO> rejectMaintenanceRecord(@PathVariable Long id, @RequestBody MaintenanceRecordUpdateDTO recordUpdateDTO) {
+    public ResponseEntity<MaintenanceRecordResponseDTO> rejectMaintenanceRecord(@PathVariable Long id, @RequestBody(required=false) MaintenanceRecordUpdateDTO recordUpdateDTO) {
         try {
-            MaintenanceRecordDTO dto =  maintenanceRecordService.rejectMaintenanceRecord(id, recordUpdateDTO);
+            MaintenanceRecordResponseDTO dto =  maintenanceRecordService.rejectMaintenanceRecord(id, recordUpdateDTO);
             return ResponseEntity.status(HttpStatus.OK).body(dto);
         }
         catch (EntityNotFoundException e) {

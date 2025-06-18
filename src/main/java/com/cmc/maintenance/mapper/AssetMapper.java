@@ -1,9 +1,6 @@
 package com.cmc.maintenance.mapper;
 
-import com.cmc.maintenance.dto.AssetDTO;
-import com.cmc.maintenance.dto.ChecklistItemDTO;
-import com.cmc.maintenance.dto.MaintenanceRecordDTO;
-import com.cmc.maintenance.dto.MaintenanceResultDTO;
+import com.cmc.maintenance.dto.*;
 import com.cmc.maintenance.model.*;
 
 import java.util.stream.Collectors;
@@ -22,14 +19,14 @@ public class AssetMapper {
         return asset;
     }
 
-    public static AssetDTO toDTO(Asset asset) {
+    public static AssetResponseDTO toDTO(Asset asset) {
         if (asset == null) return null;
-        AssetDTO dto = new AssetDTO();
+        AssetResponseDTO dto = new AssetResponseDTO();
         dto.setId(asset.getId());
         dto.setName(asset.getName());
         dto.setTagId(asset.getTagId());
         dto.setLocation(asset.getLocation());
-        dto.setTypeId(asset.getType() != null ? asset.getType().getId() : null);
+        dto.setAssetType(asset.getType() != null ? asset.getType().getName() : null);
         dto.setLastMaintenanceTime(asset.getLastMaintenanceTime());
         dto.setNextMaintenanceDate(asset.getNextMaintenanceDate());
         dto.setMaintenanceCycleInDays(asset.getMaintenanceCycleInDays());
@@ -47,11 +44,25 @@ public class AssetMapper {
         return dto;
     }
 
-    public static MaintenanceRecordDTO toDTO(MaintenanceRecord record) {
+//    public static MaintenanceRecordDTO toDTO(MaintenanceRecord record) {
+//        if (record == null) return null;
+//        MaintenanceRecordDTO dto = new MaintenanceRecordDTO();
+//        dto.setId(record.getId());
+//        dto.setAssetId(record.getAsset() != null ? record.getAsset().getId() : null);
+//        dto.setMaintenanceDate(record.getMaintenanceDate());
+//        dto.setApprovalStatus(record.getApprovalStatus().name());
+//        dto.setAdminRemarks(record.getAdminRemarks());
+//        dto.setMaintenanceResults(record.getMaintenanceResults().stream()
+//                .map(AssetMapper::toDTO)
+//                .toList());
+//        return dto;
+//    }
+
+    public static MaintenanceRecordResponseDTO toDTO(MaintenanceRecord record) {
         if (record == null) return null;
-        MaintenanceRecordDTO dto = new MaintenanceRecordDTO();
+        MaintenanceRecordResponseDTO dto = new MaintenanceRecordResponseDTO();
         dto.setId(record.getId());
-        dto.setAssetId(record.getAsset() != null ? record.getAsset().getId() : null);
+        dto.setAsset(record.getAsset() != null ? toDTO(record.getAsset()) : null);
         dto.setMaintenanceDate(record.getMaintenanceDate());
         dto.setApprovalStatus(record.getApprovalStatus().name());
         dto.setAdminRemarks(record.getAdminRemarks());
@@ -75,12 +86,24 @@ public class AssetMapper {
         return maintenanceRecord;
     }
 
-    public static MaintenanceResultDTO toDTO(MaintenanceResult result) {
+//    public static MaintenanceResultDTO toDTO(MaintenanceResult result) {
+//        if (result == null) return null;
+//        MaintenanceResultDTO dto = new MaintenanceResultDTO();
+//        dto.setId(result.getId());
+//        dto.setMaintenanceRecordId(result.getMaintenanceRecord() != null ? result.getMaintenanceRecord().getId() : null);
+//        dto.setChecklistItemId(result.getChecklistItem() != null ? result.getChecklistItem().getId() : null);
+//        dto.setResult(result.getResult() != null ? result.getResult().name() : null);
+//        dto.setComments(result.getComments());
+//        return dto;
+//    }
+
+    public static MaintenanceResultResponseDTO toDTO(MaintenanceResult result) {
         if (result == null) return null;
-        MaintenanceResultDTO dto = new MaintenanceResultDTO();
+        MaintenanceResultResponseDTO dto = new MaintenanceResultResponseDTO();
         dto.setId(result.getId());
         dto.setMaintenanceRecordId(result.getMaintenanceRecord() != null ? result.getMaintenanceRecord().getId() : null);
         dto.setChecklistItemId(result.getChecklistItem() != null ? result.getChecklistItem().getId() : null);
+        dto.setChecklistItemTask(result.getChecklistItem() != null ? result.getChecklistItem().getTask() : null);
         dto.setResult(result.getResult() != null ? result.getResult().name() : null);
         dto.setComments(result.getComments());
         return dto;
