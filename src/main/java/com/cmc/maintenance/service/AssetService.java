@@ -76,6 +76,11 @@ public class AssetService {
     }
 
     @Transactional(readOnly = true)
+    public Long getCountOfAssetsDueForMaintenance(LocalDate dueDate) {
+        return assetRepository.countAssetsDueForMaintenance(dueDate);
+    }
+
+    @Transactional(readOnly = true)
     public List<AssetResponseDTO> getAllAssets() {
         return assetRepository.findAll().stream()
                 .map(AssetMapper::toDTO)
@@ -105,5 +110,9 @@ public class AssetService {
     private AssetType getAssetTypeById(Long typeId) {
         return assetTypeService.getAssetTypeById(typeId)
                 .orElseThrow(() -> new IllegalArgumentException("Asset type not found with id : " + typeId));
+    }
+
+    public Long getTotalAssetsCount() {
+        return assetRepository.count();
     }
 }

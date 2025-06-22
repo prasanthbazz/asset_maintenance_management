@@ -27,6 +27,9 @@ public interface AssetRepository extends JpaRepository<Asset, Long> {
     @Query("SELECT a FROM Asset a WHERE a.nextMaintenanceDate <= :currentDate")
     List<Asset> findAssetsDueForMaintenance(@Param("currentDate") LocalDate currentDate);
 
+    @Query("SELECT COUNT(a) FROM Asset a WHERE a.nextMaintenanceDate <= :currentDate")
+    long countAssetsDueForMaintenance(@Param("currentDate") LocalDate currentDate);
+
     // Count assets by type
     //long countByAssetType(Asset.AssetType assetType);
 }
