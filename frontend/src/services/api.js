@@ -43,8 +43,13 @@ api.interceptors.response.use(
     return response.data;
   }
 
-  export const approveMaintenanceRecord = async (id) => {
-    const response = await api.patch(`/maintenance-records/${id}/approve`);
+  export const getApprovedMaintenanceRecords = async () => {
+    const response = await api.get('/maintenance-records/approved');
+    return response.data;
+  }
+
+  export const approveMaintenanceRecord = async (id, remarks) => {
+    const response = await api.patch(`/maintenance-records/${id}/approve`, remarks);
     return response.data;
   }
 

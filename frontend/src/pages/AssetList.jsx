@@ -5,6 +5,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 import { PlusCircle, ChevronRight, Filter } from "lucide-react";
 import { format, parseISO, startOfDay, differenceInCalendarDays } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 // import {
 //   Popover,
 //   PopoverContent,
@@ -19,6 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 //   MenubarTrigger,
 // } from "@/components/ui/menubar";
 import { getAssets } from "@/services/api"
+//import { Input } from 'postcss';
 
 function AssetList() {
   const navigate = useNavigate();
@@ -105,7 +107,8 @@ function AssetList() {
   const [filters, setFilters] = useState({
     condition: "all_conditions",
     type: "all_types",
-    location: "all_locations"
+    location: "all_locations",
+    searchTerm: ""
   });
 
   // Extract unique values for filter options
@@ -119,7 +122,8 @@ function AssetList() {
       return (
         (filters.condition === "all_conditions" || getAssetCondition(asset.nextMaintenanceDate) === filters.condition) &&
         (filters.type === "all_types" || asset.assetType === filters.type) &&
-        (filters.location === "all_locations" || asset.location === filters.location)
+        (filters.location === "all_locations" || asset.location === filters.location) &&
+        (filters.searchTerm === "" || asset.name.toLowerCase().includes(filters.searchTerm.toLowerCase()))
       );
     });
     
@@ -137,7 +141,8 @@ function AssetList() {
     setFilters({
       condition: "all_conditions",
       type: "all_types",
-      location: "all_locations"
+      location: "all_locations",
+      searchTerm: ""
     });
   };
 
@@ -194,7 +199,14 @@ function AssetList() {
             <Filter className="h-5 w-5 mr-2" /> Filters
           </h2>
           
-          <div className="flex-grow flex flex-wrap gap-4">
+          {/* <div className="flex-grow flex flex-wrap gap-4"> */}
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 border-b">
+            <Input
+              placeholder="Search by name or tag..."
+              value={filters.searchTerm}
+              onChange={(e) => handleFilterChange("searchTerm", e.target.value)}
+            >
+            </Input>
             <Select
               value={filters.condition}
               onValueChange={(value) => handleFilterChange("condition", value)}

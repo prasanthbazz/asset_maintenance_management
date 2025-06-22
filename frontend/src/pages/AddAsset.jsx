@@ -153,7 +153,7 @@ function AddAsset() {
 
             <div className="space-y-2">
               <label htmlFor="lastMaintenanceTime" className="text-sm font-medium">
-                Last Maintenance Time
+                Last Maintenance
               </label>
               <Popover>
                 <PopoverTrigger asChild>
