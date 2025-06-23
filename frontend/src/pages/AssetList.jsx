@@ -216,10 +216,15 @@ function AssetList() {
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Condition" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all_conditions">All Conditions</SelectItem>
+              <SelectContent className="bg-white shadow-md border border-gray-200 rounded-md">
+                <SelectItem
+                  className="hover:bg-gray-100 cursor-pointer rounded px-2 py-1"
+                  value="all_conditions"
+                >
+                  All Conditions
+                </SelectItem>
                 {conditions.map(condition => (
-                  <SelectItem key={condition} value={condition}>{condition}</SelectItem>
+                  <SelectItem key={condition} value={condition} className="hover:bg-gray-100 cursor-pointer px-2 py-1">{condition}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -231,10 +236,10 @@ function AssetList() {
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all_types">All Types</SelectItem>
+              <SelectContent className="bg-white shadow-md border border-gray-200 rounded-md">
+                <SelectItem value="all_types" className="hover:bg-gray-100 cursor-pointer rounded px-2 py-1">All Types</SelectItem>
                 {types.map(type => (
-                  <SelectItem key={type} value={type}>{type}</SelectItem>
+                  <SelectItem key={type} value={type} className="hover:bg-gray-100 cursor-pointer px-2 py-1">{type} </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -246,10 +251,10 @@ function AssetList() {
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all_locations">All Locations</SelectItem>
+              <SelectContent className="bg-white shadow-md border border-gray-200 rounded-md">
+                <SelectItem value="all_locations" className="hover:bg-gray-100 cursor-pointer rounded px-2 py-1">All Locations</SelectItem>
                 {locations.map(location => (
-                  <SelectItem key={location} value={location}>{location}</SelectItem>
+                  <SelectItem key={location} value={location} className="hover:bg-gray-100 cursor-pointer px-2 py-1">{location}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -257,9 +262,9 @@ function AssetList() {
           
           {(filters.condition !== "all_conditions" || filters.type !== "all_types" || filters.location !== "all_locations") && (
             <Button 
-              variant="outline" 
-              onClick={clearFilters} 
-              className="ml-auto"
+              variant="ghost" 
+              onClick={clearFilters}
+              className="ml-auto bg-blue-500 text-white hover:bg-blue-600"
             >
               Clear Filters
             </Button>
