@@ -187,7 +187,9 @@ function AssetList() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Asset Management</h1>
         <Link to="/assets/add">
-          <Button className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            className="flex items-center gap-1 bg-blue-500 text-white hover:bg-blue-600">
             <PlusCircle className="h-4 w-4" /> Add Asset
           </Button>
         </Link>

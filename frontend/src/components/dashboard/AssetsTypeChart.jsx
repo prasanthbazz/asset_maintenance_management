@@ -2,28 +2,7 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 
-export const AssetsTypeChart = () => {
-    const typeCounts = {
-        "WheelChair" : 300,
-        "Cot" : 5,
-        "Trolley" : 40,
-        "Boiler": 2,
-        "medical gas": 100,
-        "medical gas9": 100,
-        "medical gas8": 100,
-        "medical gas7": 100,
-        "medical gas6": 100,
-        "medical gas5": 100,
-        "medical gas4": 100,
-        "medical gas3": 100,
-        "medical gas2": 100,
-        "medical gas1": 100
-    }
-
-    const data = Object.entries(typeCounts).map(([name, count]) => ({
-        name,
-        count,
-    }));
+export const AssetsTypeChart = ({data}) => {
 
     return (
     <Card className="bg-white border-none shadow-lg">
@@ -33,12 +12,12 @@ export const AssetsTypeChart = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {(typeCounts.length == 0)?(<p className="text-gray-500 text-center py-8">No asset data available to display status.</p>):(
+        {(data.length == 0)?(<p className="text-gray-500 text-center py-8">No asset data available to display status.</p>):(
         <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
                 <BarChart data={data} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" angle={-30} textAnchor="end" height={70} interval={0} 
+                    <XAxis dataKey="assetType" angle={-30} textAnchor="end" height={70} interval={0} 
                         tick={{fontSize: 10}}
                     />
                     <YAxis allowDecimals={false} />

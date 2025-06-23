@@ -2,22 +2,17 @@ import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 
-//const COLORS = ['#28a745', '#fd7e14', '#dc3545'];
-const COLORS = ['#F87171', '#FACC15', '#4ADE80']
+const COLORS = ['#86efac', '#fde047', '#f87171'];
 
-export const AssetsStatusChart = () => {
-  
-  let total = 84;
-  let maintained = 57;
-  let dueSoon = 18; // Within 7 days
-  let overdue = 10;
+export const AssetsStatusChart = ({maintenanceStatusData}) => {
   
   const data = [
-    { name: 'Properly Maintained', value: maintained },
-    { name: 'Due Soon (7 days)', value: dueSoon },
-    { name: 'Overdue', value: overdue },
+    { name: 'Properly Maintained', value: maintenanceStatusData.maintained },
+    { name: 'Due Soon (7 days)', value: maintenanceStatusData.dueSoon },
+    { name: 'Overdue', value: maintenanceStatusData.overdue },
   ];
 
+  console.log("AssetsStatusChart data : " + data);
   return (
     <Card className="bg-white border-none shadow-lg">
       <CardHeader>
@@ -26,7 +21,7 @@ export const AssetsStatusChart = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {(total == 0)?(<p className="text-gray-500 text-center py-8">No asset data available to display status.</p>):(
+        {(data.length == 0)?(<p className="text-gray-500 text-center py-8">No asset data available to display status.</p>):(
         <div style={{ width: '100%', height: 300 }}>
           <ResponsiveContainer>
             <PieChart>

@@ -48,8 +48,8 @@ const dashboard = () => {
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <AssetsStatusChart />
-            <AssetsTypeChart />
+            <AssetsStatusChart maintenanceStatusData={summary.assetsCountByMaintenanceStatus} />
+            <AssetsTypeChart data={summary.assetsCountByType} />
             {/*<AssetTypeDistributionChart assets={assets} /> */}
           </div>
     </div>
