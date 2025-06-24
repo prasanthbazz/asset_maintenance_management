@@ -12,7 +12,7 @@ export const AssetsTypeChart = ({data}) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {(data.length == 0)?(<p className="text-gray-500 text-center py-8">No asset data available to display status.</p>):(
+        {(data.length == 0)?(<p className="text-gray-500 text-center py-8">No asset data available to display.</p>):(
         <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
                 <BarChart data={data} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>

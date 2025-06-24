@@ -21,7 +21,9 @@ export const AssetsStatusChart = ({maintenanceStatusData}) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {(data.length == 0)?(<p className="text-gray-500 text-center py-8">No asset data available to display status.</p>):(
+        {(data.map(status => status.value).reduce((accumulator, currentValue) => accumulator + currentValue, 0) == 0)?
+        (<p className="text-gray-500 text-center py-8">No asset data available to display status.</p>):
+        (
         <div style={{ width: '100%', height: 300 }}>
           <ResponsiveContainer>
             <PieChart>
