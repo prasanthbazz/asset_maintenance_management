@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import {addAsset} from "@/services/api"
+import {addAsset, getAssetTypes} from "@/services/api"
 
 function AddAsset() {
   const navigate = useNavigate();
@@ -20,14 +20,22 @@ function AddAsset() {
   });
   const [selectedDate, setSelectedDate] = useState();
   const [loading, setLoading] = useState(false);
-  
-  // These would come from the backend in a real application
-  // Comment: Adding/editing asset types would be future scope
-  const assetTypes = [
-    { id: 1, name: 'Wheelchair' },
-    { id: 2, name: 'Cot' },
-    { id: 3, name: 'Bed' }
-  ];
+  //To-Do : fetching this for every add asset might be costly. To-Do : fetch this in assets and send as props
+  const [assetTypes, setAssetTypes] = useState([]);
+
+  useEffect(() => {
+    const fetchAssetTypes = async () => {
+      try {
+        const data = await getAssetTypes();
+        //const data = await response.json();
+        setAssetTypes(data);
+      } catch (error) {
+        console.error('Error fetching assets:', error);
+      }
+    };
+
+    fetchAssetTypes();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

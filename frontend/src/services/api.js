@@ -32,6 +32,11 @@ api.interceptors.response.use(
     const response = await api.get('/assets');
     return response.data;
   };
+
+  export const getAssetTypes = async () => {
+    const response = await api.get('/asset-types');
+    return response.data;
+  }
   
   export const addAsset = async (asset) => {
     const response = await api.post('/assets', asset);
