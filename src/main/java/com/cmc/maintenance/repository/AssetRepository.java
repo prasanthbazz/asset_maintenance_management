@@ -1,5 +1,7 @@
 package com.cmc.maintenance.repository;
 
+import com.cmc.maintenance.dto.AssetMaintenanceStatusCountDTO;
+import com.cmc.maintenance.dto.AssetTypeCountDTO;
 import com.cmc.maintenance.model.Asset;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +29,21 @@ public interface AssetRepository extends JpaRepository<Asset, Long> {
     @Query("SELECT a FROM Asset a WHERE a.nextMaintenanceDate <= :currentDate")
     List<Asset> findAssetsDueForMaintenance(@Param("currentDate") LocalDate currentDate);
 
+    @Query("SELECT COUNT(a) FROM Asset a WHERE a.nextMaintenanceDate <= :currentDate")
+    long countAssetsDueForMaintenance(@Param("currentDate") LocalDate currentDate);
+
+    @Query("SELECT new com.cmc.maintenance.dto.AssetTypeCountDTO(a.type.name, COUNT(a)) FROM Asset a GROUP BY a.type.name")
+    List<AssetTypeCountDTO> countAssetsByAssetType();
+
+    @Query("""
+      SELECT new com.cmc.maintenance.dto.AssetMaintenanceStatusCountDTO(
+        SUM(CASE WHEN a.nextMaintenanceDate > :dueSoonCutoffDate THEN 1 ELSE 0 END),
+        SUM(CASE WHEN a.nextMaintenanceDate BETWEEN CURRENT_DATE AND :dueSoonCutoffDate THEN 1 ELSE 0 END),
+        SUM(CASE WHEN a.nextMaintenanceDate < CURRENT_DATE THEN 1 ELSE 0 END)
+      )
+      FROM Asset a
+    """)
+    AssetMaintenanceStatusCountDTO countAssetsByMaintenanceStatus(@Param("dueSoonCutoffDate") LocalDate dueSoonCutoffDate);
     // Count assets by type
     //long countByAssetType(Asset.AssetType assetType);
 }

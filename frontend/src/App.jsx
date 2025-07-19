@@ -4,7 +4,9 @@ import Login from './pages/Login';
 import { useAuthStore } from './store/auth';
 import AssetList from './pages/AssetList';
 import AddAsset from './pages/AddAsset';
-import MaintenanceApproval from './pages/MaintenanceList';
+//import MaintenanceApproval from './pages/MaintenanceList';
+import Maintenance from './pages/Maintenance'
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   return (
@@ -12,11 +14,11 @@ const App = () => {
       {/* <Navbar /> */}
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<PrivateRoute><div>Dashboard under development</div></PrivateRoute>} />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route path="/assets" element={<PrivateRoute> <AssetList /></PrivateRoute>} />
         <Route path="/assets/add" element={<PrivateRoute><AddAsset /></PrivateRoute>}/>
-        <Route path="/maintenance"element={<PrivateRoute><MaintenanceApproval /></PrivateRoute>}/>
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/maintenance"element={<PrivateRoute><Maintenance /></PrivateRoute>}/>
+        <Route path="/" element={<PrivateRoute><Navigate to="/dashboard" /></PrivateRoute>} />
       </Routes>
     </Router>
   );

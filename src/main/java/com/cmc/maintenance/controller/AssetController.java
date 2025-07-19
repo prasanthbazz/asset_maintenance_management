@@ -41,6 +41,7 @@ public class AssetController {
 
     @GetMapping
     public ResponseEntity<List<AssetResponseDTO>> getAllAssets(){
+        System.out.println("Inside getAllAssets");
         return new ResponseEntity<>(assetService.getAllAssets(), HttpStatus.OK);
     }
 

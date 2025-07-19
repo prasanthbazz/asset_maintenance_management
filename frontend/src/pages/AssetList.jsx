@@ -5,6 +5,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 import { PlusCircle, ChevronRight, Filter } from "lucide-react";
 import { format, parseISO, startOfDay, differenceInCalendarDays } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 // import {
 //   Popover,
 //   PopoverContent,
@@ -19,6 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 //   MenubarTrigger,
 // } from "@/components/ui/menubar";
 import { getAssets } from "@/services/api"
+//import { Input } from 'postcss';
 
 function AssetList() {
   const navigate = useNavigate();
@@ -105,7 +107,8 @@ function AssetList() {
   const [filters, setFilters] = useState({
     condition: "all_conditions",
     type: "all_types",
-    location: "all_locations"
+    location: "all_locations",
+    searchTerm: ""
   });
 
   // Extract unique values for filter options
@@ -119,7 +122,8 @@ function AssetList() {
       return (
         (filters.condition === "all_conditions" || getAssetCondition(asset.nextMaintenanceDate) === filters.condition) &&
         (filters.type === "all_types" || asset.assetType === filters.type) &&
-        (filters.location === "all_locations" || asset.location === filters.location)
+        (filters.location === "all_locations" || asset.location === filters.location) &&
+        (filters.searchTerm === "" || asset.name.toLowerCase().includes(filters.searchTerm.toLowerCase()))
       );
     });
     
@@ -137,7 +141,8 @@ function AssetList() {
     setFilters({
       condition: "all_conditions",
       type: "all_types",
-      location: "all_locations"
+      location: "all_locations",
+      searchTerm: ""
     });
   };
 
@@ -182,7 +187,9 @@ function AssetList() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Asset Management</h1>
         <Link to="/assets/add">
-          <Button className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            className="flex items-center gap-1 bg-blue-500 text-white hover:bg-blue-600">
             <PlusCircle className="h-4 w-4" /> Add Asset
           </Button>
         </Link>
@@ -194,7 +201,14 @@ function AssetList() {
             <Filter className="h-5 w-5 mr-2" /> Filters
           </h2>
           
-          <div className="flex-grow flex flex-wrap gap-4">
+          {/* <div className="flex-grow flex flex-wrap gap-4"> */}
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 border-b">
+            <Input
+              placeholder="Search by name or tag..."
+              value={filters.searchTerm}
+              onChange={(e) => handleFilterChange("searchTerm", e.target.value)}
+            >
+            </Input>
             <Select
               value={filters.condition}
               onValueChange={(value) => handleFilterChange("condition", value)}
@@ -202,10 +216,15 @@ function AssetList() {
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Condition" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all_conditions">All Conditions</SelectItem>
+              <SelectContent className="bg-white shadow-md border border-gray-200 rounded-md">
+                <SelectItem
+                  className="hover:bg-gray-100 cursor-pointer rounded px-2 py-1"
+                  value="all_conditions"
+                >
+                  All Conditions
+                </SelectItem>
                 {conditions.map(condition => (
-                  <SelectItem key={condition} value={condition}>{condition}</SelectItem>
+                  <SelectItem key={condition} value={condition} className="hover:bg-gray-100 cursor-pointer px-2 py-1">{condition}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -217,10 +236,10 @@ function AssetList() {
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all_types">All Types</SelectItem>
+              <SelectContent className="bg-white shadow-md border border-gray-200 rounded-md">
+                <SelectItem value="all_types" className="hover:bg-gray-100 cursor-pointer rounded px-2 py-1">All Types</SelectItem>
                 {types.map(type => (
-                  <SelectItem key={type} value={type}>{type}</SelectItem>
+                  <SelectItem key={type} value={type} className="hover:bg-gray-100 cursor-pointer px-2 py-1">{type} </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -232,20 +251,20 @@ function AssetList() {
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all_locations">All Locations</SelectItem>
+              <SelectContent className="bg-white shadow-md border border-gray-200 rounded-md">
+                <SelectItem value="all_locations" className="hover:bg-gray-100 cursor-pointer rounded px-2 py-1">All Locations</SelectItem>
                 {locations.map(location => (
-                  <SelectItem key={location} value={location}>{location}</SelectItem>
+                  <SelectItem key={location} value={location} className="hover:bg-gray-100 cursor-pointer px-2 py-1">{location}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           
-          {(filters.condition !== "all_conditions" || filters.type !== "all_types" || filters.location !== "all_locations") && (
+          {(filters.condition !== "all_conditions" || filters.type !== "all_types" || filters.location !== "all_locations" || filters.searchTerm != "") && (
             <Button 
-              variant="outline" 
-              onClick={clearFilters} 
-              className="ml-auto"
+              variant="ghost" 
+              onClick={clearFilters}
+              className="ml-auto bg-blue-500 text-white hover:bg-blue-600"
             >
               Clear Filters
             </Button>

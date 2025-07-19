@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -84,6 +85,15 @@ public class MaintenanceRecordService {
         return maintenanceRecordRepository.findByAssetIdAndApprovalStatus(assetId, MaintenanceRecord.ApprovalStatus.APPROVED).stream()
                 .map(AssetMapper::toDTO)
                 .toList();
+    }
+
+    public long getCountOfPendingMaintenanceRecords() {
+        return maintenanceRecordRepository.countByApprovalStatus(MaintenanceRecord.ApprovalStatus.PENDING);
+    }
+
+    @Transactional(readOnly = true)
+    public long getCountOfApprovedMaintenanceRecordsSince(LocalDate startDate) {
+        return maintenanceRecordRepository.countByApprovalStatusAndMaintenanceDateAfter(MaintenanceRecord.ApprovalStatus.APPROVED, startDate.atStartOfDay());
     }
 
     public MaintenanceRecordResponseDTO approveMaintenanceRecord(Long maintenanceRecordId, MaintenanceRecordUpdateDTO recordUpdateDTO) {

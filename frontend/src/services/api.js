@@ -32,6 +32,11 @@ api.interceptors.response.use(
     const response = await api.get('/assets');
     return response.data;
   };
+
+  export const getAssetTypes = async () => {
+    const response = await api.get('/asset-types');
+    return response.data;
+  }
   
   export const addAsset = async (asset) => {
     const response = await api.post('/assets', asset);
@@ -43,8 +48,13 @@ api.interceptors.response.use(
     return response.data;
   }
 
-  export const approveMaintenanceRecord = async (id) => {
-    const response = await api.patch(`/maintenance-records/${id}/approve`);
+  export const getApprovedMaintenanceRecords = async () => {
+    const response = await api.get('/maintenance-records/approved');
+    return response.data;
+  }
+
+  export const approveMaintenanceRecord = async (id, remarks) => {
+    const response = await api.patch(`/maintenance-records/${id}/approve`, remarks);
     return response.data;
   }
 
@@ -53,4 +63,8 @@ api.interceptors.response.use(
     return response.data;
   }
   
+  export const getDashboardSummary = async () => {
+    const response = await api.get('/dashboard/summary');
+    return response.data;
+  }
   export default api;
