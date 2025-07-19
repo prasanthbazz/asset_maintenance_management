@@ -260,7 +260,7 @@ function AssetList() {
             </Select>
           </div>
           
-          {(filters.condition !== "all_conditions" || filters.type !== "all_types" || filters.location !== "all_locations") && (
+          {(filters.condition !== "all_conditions" || filters.type !== "all_types" || filters.location !== "all_locations" || filters.searchTerm != "") && (
             <Button 
               variant="ghost" 
               onClick={clearFilters}
